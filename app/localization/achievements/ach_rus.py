@@ -26,7 +26,7 @@ class AchievementsRussianLocalization(AchievementsEnglishLocalization):
         A.BLOCK_NUMBER: "Сгенерировано блоков",
         A.DAILY_TX_COUNT: "Количество транзакций за день",
         A.TOTAL_MIMIR_VOTES: "Всего голосов за Mimir",
-        A.MARKET_CAP_USD: "Rune общая капитализации",
+        A.MARKET_CAP_USD: "Cacao общая капитализации",
         A.TOTAL_POOLS: "Всего пулов",
         A.TOTAL_ACTIVE_POOLS: "Активных пулов",
         A.TOTAL_UNIQUE_SAVERS: "Всего уникальных сберегателей",
@@ -36,12 +36,12 @@ class AchievementsRussianLocalization(AchievementsEnglishLocalization):
         A.SAVER_VAULT_SAVED_USD: "Глубина хранилища ::asset:: в USD",
         A.SAVER_VAULT_MEMBERS: "Сберегателей ::asset::",
         A.SAVER_VAULT_EARNED_ASSET: "Сберегатели заработали ::asset::",
-        A.SWAP_VOLUME_TOTAL_RUNE: "Общий объем свопов в RUNE",
+        A.SWAP_VOLUME_TOTAL_CACAO: "Общий объем свопов в CACAO",
         A.MAX_SWAP_AMOUNT_USD: "Максимальный объем обмена",
         A.MAX_ADD_AMOUNT_USD: "Максимальный объем добавления",
         A.MAX_ADD_AMOUNT_USD_PER_POOL: "Добавлено ::asset:: в пул за раз",
         A.COIN_MARKET_CAP_RANK: "Место по капитализации",
-        A.POL_VALUE_RUNE: "POL вклад в Rune",
+        A.POL_VALUE_CACAO: "POL вклад в Cacao",
         A.BTC_IN_VAULT: "Bitcoin в хранилище",
         A.ETH_IN_VAULT: "Ethereum в хранилище",
         A.STABLES_IN_VAULT: "Стейблы в хранилище",
@@ -51,7 +51,7 @@ class AchievementsRussianLocalization(AchievementsEnglishLocalization):
         A.WEEKLY_PROTOCOL_REVENUE_USD: "Еженедельный доход протокола",
         A.WEEKLY_AFFILIATE_REVENUE_USD: "Еженедельный доход партнеров",
 
-        A.RUNE_BURNT_LENDING: "RUNE сожжено",
+        A.CACAO_BURNT_LENDING: "CACAO сожжено",
         A.LOANS_OPENED: "Открыто займов",
         A.BORROWER_COUNT: "Количество заемщиков",
         A.MAX_LOAN_AMOUNT_USD: "Максимальный размер займа",
@@ -64,13 +64,13 @@ class AchievementsRussianLocalization(AchievementsEnglishLocalization):
     def notification_achievement_unlocked(self, a: Achievement):
         desc, ago, desc_str, emoji, milestone_str, prev_milestone_str, value_str = self.prepare_achievement_data(a)
 
-        msg = f'{emoji} <b>THORChain достиг нового рубежа!</b>\n'
+        msg = f'{emoji} <b>Maya Protocol достиг нового рубежа!</b>\n'
         if a.key == A.ANNIVERSARY:
             # special case for anniversary
             years_str = self._years_string(a.milestone)
             msg += f"С Днем рождения! Уже {a.milestone} {years_str} с первого блока!"
         elif a.key == A.COIN_MARKET_CAP_RANK:
-            msg += f"THORChain Rune заняла <b>#{milestone_str}</b> место по капитализации!"
+            msg += f"Maya Protocol Cacao заняла <b>#{milestone_str}</b> место по капитализации!"
             if a.has_previous:
                 msg += f'\nПредыдущее место: {pre(prev_milestone_str)} ({ago} назад)'
         else:
