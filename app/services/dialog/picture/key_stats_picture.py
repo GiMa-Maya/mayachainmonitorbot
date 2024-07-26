@@ -10,7 +10,7 @@ from services.lib.constants import BTC_SYMBOL, ETH_SYMBOL, ETH_USDC_SYMBOL, ETH_
     RUNE_SYMBOL
 from services.lib.draw_utils import paste_image_masked, result_color, TC_LIGHTNING_BLUE, TC_YGGDRASIL_GREEN, \
     dual_side_rect, COLOR_OF_PROFIT, font_estimate_size
-from services.lib.money import pretty_money, short_dollar, short_money, format_percent, Asset, AssetRUNE, short_rune
+from services.lib.money import pretty_money, short_dollar, short_money, format_percent, Asset, AssetCACAO, short_cacao
 from services.lib.texts import bracketify
 from services.lib.utils import async_wrap
 from services.models.key_stats_model import AlertKeyStats
