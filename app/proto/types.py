@@ -819,7 +819,7 @@ class NodeMimirs(betterproto.Message):
 
 @dataclass
 class Network(betterproto.Message):
-    bond_reward_rune: str = betterproto.string_field(1)
+    bond_reward_cacao: str = betterproto.string_field(1)
     total_bond_units: str = betterproto.string_field(2)
     l_p_income_split: int = betterproto.int64_field(3)
     node_income_split: int = betterproto.int64_field(4)
@@ -831,7 +831,7 @@ class Network(betterproto.Message):
 class NetworkFee(betterproto.Message):
     """
     NetworkFee represent the fee rate and typical transaction size outbound
-    from THORNode This is to keep the information reported by bifrost For BTC
+    from MAYANode This is to keep the information reported by bifrost For BTC
     chain, TransactionFeeRate should be sats/vbyte For Binance chain , given
     fee is fixed , thus for single coin , transaction size will be 1, and the
     rate should be 37500, for multiple coin , Transaction size should the
