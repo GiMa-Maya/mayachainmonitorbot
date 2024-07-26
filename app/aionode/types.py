@@ -9,19 +9,19 @@ from dateutil.parser import parse as date_parser
 
 from services.lib.constants import cacao_to_float
 
-THOR_BASE_MULT = 10 ** 8
-THOR_BASE_MULT_INV = 1.0 / THOR_BASE_MULT
+MAYA_BASE_MULT = 10 ** 8
+MAYA_BASE_MULT_INV = 1.0 / MAYA_BASE_MULT
 
 
-def thor_to_float(x) -> float:
-    return int(x) * THOR_BASE_MULT_INV
+def maya_to_float(x) -> float:
+    return int(x) * MAYA_BASE_MULT_INV
 
 
-def float_to_thor(x: float) -> int:
-    return int(x * THOR_BASE_MULT)
+def float_to_maya(x: float) -> int:
+    return int(x * MAYA_BASE_MULT)
 
 
-class ThorException(Exception):
+class MayaException(Exception):
     def __init__(self, j, *args) -> None:
         super().__init__(*args)
         if j and isinstance(j, dict):
@@ -36,7 +36,7 @@ class ThorException(Exception):
             ]
 
 
-class ThorQueue(NamedTuple):
+class MayaQueue(NamedTuple):
     outbound: int = 0
     swap: int = 0
     internal: int = 0
@@ -56,7 +56,7 @@ class ThorQueue(NamedTuple):
         return int(self.outbound) + int(self.swap) + int(self.internal)
 
 
-class ThorNodeAccount(NamedTuple):
+class MayaNodeAccount(NamedTuple):
     STATUS_STANDBY = 'standby'
     STATUS_ACTIVE = 'active'
     STATUS_READY = 'ready'
@@ -129,7 +129,7 @@ class ThorNodeAccount(NamedTuple):
         )
 
 
-class ThorLastBlock(NamedTuple):
+class MayaLastBlock(NamedTuple):
     chain: str = ''
     last_observed_in: int = 0
     last_signed_out: int = 0
@@ -145,7 +145,7 @@ class ThorLastBlock(NamedTuple):
         )
 
 
-class ThorPool(NamedTuple):
+class MayaPool(NamedTuple):
     balance_asset: int = 0
     balance_cacao: int = 0
     asset: str = ''
@@ -195,7 +195,7 @@ class ThorPool(NamedTuple):
         )
 
 
-class ThorConstants(NamedTuple):
+class MayaConstants(NamedTuple):
     constants: dict = None
     data_types: dict = None
 
@@ -220,7 +220,7 @@ class ThorConstants(NamedTuple):
         return self.constants[item]
 
 
-class ThorMimir(NamedTuple):
+class MayaMimir(NamedTuple):
     constants: dict = None
 
     @classmethod
@@ -237,7 +237,7 @@ class ThorMimir(NamedTuple):
         return self.constants[item]
 
 
-class ThorChainInfo(NamedTuple):
+class MayaChainInfo(NamedTuple):
     chain: str = ''
     pub_key: str = ''
     address: str = ''
@@ -275,7 +275,7 @@ class ThorChainInfo(NamedTuple):
         )
 
 
-class ThorCoin(NamedTuple):
+class MayaCoin(NamedTuple):
     asset: str = ''
     amount: int = 0
     decimals: int = 18
@@ -301,7 +301,7 @@ class ThorCoin(NamedTuple):
         )
 
 
-class ThorRouter(NamedTuple):
+class MayaRouter(NamedTuple):
     chain: str = ''
     router: str = ''
 
@@ -313,7 +313,7 @@ class ThorRouter(NamedTuple):
         )
 
 
-class ThorAddress(NamedTuple):
+class MayaAddress(NamedTuple):
     chain: str = ''
     address: str = ''
 
@@ -325,10 +325,10 @@ class ThorAddress(NamedTuple):
         )
 
 
-class ThorVault(NamedTuple):
+class MayaVault(NamedTuple):
     block_height: int = 0
     pub_key: str = ''
-    coins: List[ThorCoin] = None
+    coins: List[MayaCoin] = None
     type: str = ''
     status: str = ''
     status_since: int = 0
@@ -336,8 +336,8 @@ class ThorVault(NamedTuple):
     chains: List[str] = None
     inbound_tx_count: int = 0
     outbound_tx_count: int = 0
-    routers: List[ThorRouter] = None
-    addresses: List[ThorAddress] = None
+    routers: List[MayaRouter] = None
+    addresses: List[MayaAddress] = None
 
     TYPE_YGGDRASIL = 'YggdrasilVault'
     TYPE_ASGARD = 'AsgardVault'
@@ -356,7 +356,7 @@ class ThorVault(NamedTuple):
         return cls(
             block_height=int(j.get('block_height', 0)),
             pub_key=j.get('pub_key', ''),
-            coins=[ThorCoin.from_json(coin) for coin in j.get('coins', [])],
+            coins=[MayaCoin.from_json(coin) for coin in j.get('coins', [])],
             type=j.get('type', ''),
             status=j.get('status', ''),
             status_since=int(j.get('status_since', 0)),
@@ -364,17 +364,17 @@ class ThorVault(NamedTuple):
             chains=j.get('chains', []),
             inbound_tx_count=int(j.get('inbound_tx_count', 0)),
             outbound_tx_count=int(j.get('outbound_tx_count', 0)),
-            routers=[ThorRouter.from_json(r) for r in j.get('routers', [])],
-            addresses=[ThorAddress.from_json(a) for a in j.get('addresses', [])],
+            routers=[MayaRouter.from_json(r) for r in j.get('routers', [])],
+            addresses=[MayaAddress.from_json(a) for a in j.get('addresses', [])],
         )
 
 
 CACAO = 'cacao'
 
 
-class ThorBalances(NamedTuple):
+class MayaBalances(NamedTuple):
     height: int
-    assets: List[ThorCoin]
+    assets: List[MayaCoin]
     address: str
 
     @property
@@ -393,7 +393,7 @@ class ThorBalances(NamedTuple):
         return cls(
             height=0,
             assets=[
-                ThorCoin.from_json_bank(item) for item in j.get('balances')
+                MayaCoin.from_json_bank(item) for item in j.get('balances')
             ],
             address=address
         )
@@ -403,7 +403,7 @@ class ThorBalances(NamedTuple):
         return candidates[0] if candidates else None
 
 
-class ThorBlock(NamedTuple):
+class MayaBlock(NamedTuple):
     height: int
     chain_id: str
     time: datetime.datetime
@@ -435,7 +435,7 @@ class ThorBlock(NamedTuple):
         )
 
 
-class ThorTxAttribute(NamedTuple):
+class MayaTxAttribute(NamedTuple):
     key: str
     value: str
     index: bool
@@ -451,15 +451,15 @@ class ThorTxAttribute(NamedTuple):
         )
 
 
-class ThorTxEvent(NamedTuple):
+class MayaTxEvent(NamedTuple):
     type: str
-    attributes: List[ThorTxAttribute]
+    attributes: List[MayaTxAttribute]
 
     @classmethod
     def from_json(cls, j):
         return cls(
             type=j['type'],
-            attributes=[ThorTxAttribute.from_json(a) for a in j['attributes']]
+            attributes=[MayaTxAttribute.from_json(a) for a in j['attributes']]
         )
 
     def value_of(self, key):
@@ -480,7 +480,7 @@ class ThorTxEvent(NamedTuple):
         return int(value), asset
 
 
-class ThorNativeTX(NamedTuple):
+class MayaNativeTX(NamedTuple):
     hash: str
     height: int
     index: int
@@ -489,7 +489,7 @@ class ThorNativeTX(NamedTuple):
     log: List[dict]
     gas_wanted: int
     gas_used: int
-    events: List[ThorTxEvent]
+    events: List[MayaTxEvent]
 
     TYPE_SET_MIMIR = 'set_mimir_attr'
     TYPE_ADD_LIQUIDITY = 'add_liquidity'
@@ -509,7 +509,7 @@ class ThorNativeTX(NamedTuple):
         tx_result = result['tx_result']
         data = base64.b64decode(tx_result['data']).decode('utf-8').strip()
         log = ujson.loads(tx_result['log'])
-        events = [ThorTxEvent.from_json(e) for e in tx_result['events']]
+        events = [MayaTxEvent.from_json(e) for e in tx_result['events']]
 
         return cls(
             hash=result['hash'],
@@ -524,7 +524,7 @@ class ThorNativeTX(NamedTuple):
         )
 
 
-class ThorLiquidityProvider(NamedTuple):
+class MayaLiquidityProvider(NamedTuple):
     asset: str
     asset_address: str
     cacao_address: str
@@ -554,7 +554,7 @@ class ThorLiquidityProvider(NamedTuple):
         )
 
 
-class ThorMimirVote(NamedTuple):
+class MayaMimirVote(NamedTuple):
     key: str
     value: int
     singer: str
@@ -572,12 +572,12 @@ class ThorMimirVote(NamedTuple):
         return [cls.from_json(item) for item in j] if j else []
 
 
-class ThorPOL(NamedTuple):
+class MayaPOL(NamedTuple):
     current_deposit: int  # current amount of cacao deposited
-    pnl: int  # total value of protocol's LP position in RUNE value
-    cacao_deposited: int  # total amount of RUNE withdrawn from the pools
-    cacao_withdrawn: int  # total amount of RUNE deposited into the pools
-    value: int  # total value of protocol's LP position in RUNE value
+    pnl: int  # total value of protocol's LP position in CACAO value
+    cacao_deposited: int  # total amount of CACAO withdrawn from the pools
+    cacao_withdrawn: int  # total amount of CACAO deposited into the pools
+    value: int  # total value of protocol's LP position in CACAO value
 
     @classmethod
     def from_json(cls, j):
@@ -590,8 +590,8 @@ class ThorPOL(NamedTuple):
         )
 
 
-class ThorNetwork(NamedTuple):
-    bond_reward_rune: int
+class MayaNetwork(NamedTuple):
+    bond_reward_cacao: int
     total_bond_units: int
     total_reserve: int
     vaults_migrating: bool
@@ -599,7 +599,7 @@ class ThorNetwork(NamedTuple):
     @classmethod
     def from_json(cls, j):
         return cls(
-            bond_reward_rune=int(j.get('bond_reward_rune'), 0),
+            bond_reward_cacao=int(j.get('bond_reward_cacao'), 0),
             total_bond_units=int(j.get('total_bond_units', 0)),
             total_reserve=int(j.get('total_reserve', 0)),
             vaults_migrating=bool(j.get('vaults_migrating', False)),
