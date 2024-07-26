@@ -21,7 +21,7 @@ class GenericAchievementPictureGenerator(BasePictureGenerator):
     HEIGHT = 1024
 
     def generate_picture_filename(self):
-        return f'thorchain-ach-{self.ach.key}-{today_str()}.png'
+        return f'mayachain-ach-{self.ach.key}-{today_str()}.png'
 
     def __init__(self, loc: AchievementsLocalizationBase, a: Achievement, force_background: str = None):
         # noinspection PyTypeChecker
