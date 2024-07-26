@@ -26,7 +26,7 @@ class AchievementsEnglishLocalization(AchievementsLocalizationBase):
         A.BLOCK_NUMBER: "Blocks generated",
         A.DAILY_TX_COUNT: "Daily TX count",
         A.TOTAL_MIMIR_VOTES: "Total Mimir votes",
-        A.MARKET_CAP_USD: "Rune Total Market Cap",
+        A.MARKET_CAP_USD: "Cacao Total Market Cap",
         A.TOTAL_POOLS: "Total pools",
         A.TOTAL_ACTIVE_POOLS: "Active pools",
         A.TOTAL_UNIQUE_SAVERS: "Total unique savers",
@@ -36,12 +36,12 @@ class AchievementsEnglishLocalization(AchievementsLocalizationBase):
         A.SAVER_VAULT_SAVED_USD: "::asset:: Savers depth in USD",
         A.SAVER_VAULT_MEMBERS: "::asset:: savers count",
         A.SAVER_VAULT_EARNED_ASSET: "Savers earned ::asset::",
-        A.SWAP_VOLUME_TOTAL_RUNE: "Total swap volume",
+        A.SWAP_VOLUME_TOTAL_CACAO: "Total swap volume",
         A.MAX_SWAP_AMOUNT_USD: "Maximum swap volume",
         A.MAX_ADD_AMOUNT_USD: "Maximum add liquidity volume",
         A.MAX_ADD_AMOUNT_USD_PER_POOL: "Added ::asset:: in a single TX",
         A.COIN_MARKET_CAP_RANK: "Market cap rank",
-        A.POL_VALUE_RUNE: "POL maximum value",
+        A.POL_VALUE_CACAO: "POL maximum value",
         A.BTC_IN_VAULT: "Bitcoin in vaults",
         A.ETH_IN_VAULT: "Ethereum in vaults",
         A.STABLES_IN_VAULT: "Stable coins in vaults",
@@ -65,7 +65,7 @@ class AchievementsEnglishLocalization(AchievementsLocalizationBase):
         desc, ago, desc_str, emoji, milestone_str, prev_milestone_str, value_str = self.prepare_achievement_data(a)
         desc: ADesc
 
-        msg = f'{emoji} <b>THORChain has hit a new milestone!</b>\n'
+        msg = f'{emoji} <b>Maya Protocol has hit a new milestone!</b>\n'
 
         if a.key == A.ANNIVERSARY:
             # special case for anniversary
