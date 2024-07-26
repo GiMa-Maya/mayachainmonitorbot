@@ -4,12 +4,12 @@ from typing import Dict
 
 from aiohttp import ClientSession, ClientError, ServerDisconnectedError
 
-from .env import ThorEnvironment
-from .nodeclient import ThorNodeClient
+from .env import MayaEnvironment
+from .nodeclient import MayaNodeClient
 from .types import *
 
 
-class ThorConnector:
+class MayaConnector:
     # --- METHODS ----
 
     async def query_custom_path(self, path):
@@ -19,70 +19,70 @@ class ThorConnector:
     async def query_raw(self, path, is_rpc=False):
         return await self._request(path, is_rpc=is_rpc)
 
-    async def query_node_accounts(self, height=0) -> List[ThorNodeAccount]:
+    async def query_node_accounts(self, height=0) -> List[MayaNodeAccount]:
         data = await self._request(self.env.path_nodes_height.format(height=int(height)))
-        return [ThorNodeAccount.from_json(j) for j in data] if data else []
+        return [MayaNodeAccount.from_json(j) for j in data] if data else []
 
-    async def query_queue(self) -> ThorQueue:
+    async def query_queue(self) -> MayaQueue:
         data = await self._request(self.env.path_queue)
-        return ThorQueue.from_json(data)
+        return MayaQueue.from_json(data)
 
-    async def query_pools(self, height=None) -> List[ThorPool]:
+    async def query_pools(self, height=None) -> List[MayaPool]:
         if height:
             path = self.env.path_pools_height.format(height=height)
         else:
             path = self.env.path_pools
         data = await self._request(path, treat_empty_as_ok=False)
-        return [ThorPool.from_json(j) for j in data]
+        return [MayaPool.from_json(j) for j in data]
 
-    async def query_pool(self, pool: str, height=None) -> ThorPool:
+    async def query_pool(self, pool: str, height=None) -> MayaPool:
         if height:
             path = self.env.path_pool_height.format(pool=pool, height=height)
         else:
             path = self.env.path_pool.format(pool=pool)
         data = await self._request(path)
-        return ThorPool.from_json(data)
+        return MayaPool.from_json(data)
 
-    async def query_last_blocks(self) -> List[ThorLastBlock]:
+    async def query_last_blocks(self) -> List[MayaLastBlock]:
         data = await self._request(self.env.path_last_blocks)
-        return [ThorLastBlock.from_json(j) for j in data] if isinstance(data, list) else [ThorLastBlock.from_json(data)]
+        return [MayaLastBlock.from_json(j) for j in data] if isinstance(data, list) else [MayaLastBlock.from_json(data)]
 
-    async def query_constants(self) -> ThorConstants:
+    async def query_constants(self) -> MayaConstants:
         data = await self._request(self.env.path_constants)
-        return ThorConstants.from_json(data) if data else ThorConstants()
+        return MayaConstants.from_json(data) if data else MayaConstants()
 
-    async def query_mimir(self) -> ThorMimir:
+    async def query_mimir(self) -> MayaMimir:
         data = await self._request(self.env.path_mimir)
-        return ThorMimir.from_json(data) if data else ThorMimir()
+        return MayaMimir.from_json(data) if data else MayaMimir()
 
-    async def query_mimir_votes(self) -> List[ThorMimirVote]:
+    async def query_mimir_votes(self) -> List[MayaMimirVote]:
         response = await self._request(self.env.path_mimir_votes)
         mimirs = response.get('mimirs', [])
-        return ThorMimirVote.from_json_array(mimirs)
+        return MayaMimirVote.from_json_array(mimirs)
 
     async def query_mimir_node_accepted(self) -> dict:
         response = await self._request(self.env.path_mimir_nodes)
         return response or {}
 
-    async def query_chain_info(self) -> Dict[str, ThorChainInfo]:
+    async def query_chain_info(self) -> Dict[str, MayaChainInfo]:
         data = await self._request(self.env.path_inbound_addresses)
         if isinstance(data, list):
-            info_list = [ThorChainInfo.from_json(j) for j in data]
+            info_list = [MayaChainInfo.from_json(j) for j in data]
         else:
             # noinspection PyUnresolvedReferences
             current = data.get('current', {})  # single-chain
-            info_list = [ThorChainInfo.from_json(j) for j in current]
+            info_list = [MayaChainInfo.from_json(j) for j in current]
         return {info.chain: info for info in info_list}
 
-    async def query_vault(self, vault_type=ThorVault.TYPE_ASGARD) -> List[ThorVault]:
-        path = self.env.path_vault_asgard if vault_type == ThorVault.TYPE_ASGARD else self.env.path_vault_yggdrasil
+    async def query_vault(self, vault_type=MayaVault.TYPE_ASGARD) -> List[MayaVault]:
+        path = self.env.path_vault_asgard if vault_type == MayaVault.TYPE_ASGARD else self.env.path_vault_yggdrasil
         data = await self._request(path)
-        return [ThorVault.from_json(v) for v in data]
+        return [MayaVault.from_json(v) for v in data]
 
-    async def query_balance(self, address: str) -> ThorBalances:
+    async def query_balance(self, address: str) -> MayaBalances:
         path = self.env.path_balance.format(address=address)
         data = await self._request(path)
-        return ThorBalances.from_json(data, address)
+        return MayaBalances.from_json(data, address)
 
     async def query_supply_raw(self):
         r = await self._request(self.env.path_supply)
@@ -93,9 +93,9 @@ class ThorConnector:
         data = await self._request(path, is_rpc=True)
         return data
 
-    async def query_block(self, height) -> ThorBalances:
+    async def query_block(self, height) -> MayaBalances:
         data = await self.query_tendermint_block_raw(height)
-        return ThorBlock.from_json(data)
+        return MayaBlock.from_json(data)
 
     async def query_native_tx(self, tx_hash: str, before_hard_fork=False):
         tx_hash = str(tx_hash)
@@ -105,7 +105,7 @@ class ThorConnector:
         path_pattern = self.env.path_tx_by_hash_old if before_hard_fork else self.env.path_tx_by_hash
         path = path_pattern.format(hash=tx_hash)
         data = await self._request(path, is_rpc=True)
-        return ThorNativeTX.from_json(data)
+        return MayaNativeTX.from_json(data)
 
     async def query_genesis(self):
         data = await self._request(self.env.path_genesis, is_rpc=True)
@@ -122,41 +122,41 @@ class ThorConnector:
         url = self.env.path_liq_providers.format(asset=asset, height=height)
         data = await self._request(url)
         if data:
-            return [ThorLiquidityProvider.from_json(p) for p in data]
+            return [MayaLiquidityProvider.from_json(p) for p in data]
 
     async def query_liquidity_provider(self, asset, address, height=0):
         url = self.env.path_liq_provider_details.format(asset=asset, height=height, address=address)
         data = await self._request(url)
         if data:
-            return ThorLiquidityProvider.from_json(data)
+            return MayaLiquidityProvider.from_json(data)
 
     async def query_savers(self, asset, height=0):
         url = self.env.path_savers.format(asset=asset, height=height)
         data = await self._request(url)
         if data:
-            return [ThorLiquidityProvider.from_json(p) for p in data]
+            return [MayaLiquidityProvider.from_json(p) for p in data]
 
     async def query_saver_details(self, asset, address, height=0):
         url = self.env.path_saver_details.format(asset=asset, height=height, address=address)
         data = await self._request(url)
         if data:
-            return ThorLiquidityProvider.from_json(data)
+            return MayaLiquidityProvider.from_json(data)
 
     async def query_pol(self, height=0):
         url = self.env.path_pol.format(height=height)
         data = await self._request(url)
         if data:
-            return ThorPOL.from_json(data)
+            return MayaPOL.from_json(data)
 
     async def query_network(self, height=0):
         url = self.env.path_network.format(height=height)
         data = await self._request(url)
         if data:
-            return ThorNetwork.from_json(data)
+            return MayaNetwork.from_json(data)
 
     # ---- Internal ----
 
-    def __init__(self, env: ThorEnvironment, session: ClientSession, logger=None, extra_headers=None,
+    def __init__(self, env: MayaEnvironment, session: ClientSession, logger=None, extra_headers=None,
                  additional_envs=None, silent=True):
         self.session = session
         self.env = env
@@ -173,8 +173,8 @@ class ThorConnector:
             for env in additional_envs:
                 self._clients.append(self._make_client(env, extra_headers))
 
-    def _make_client(self, env: ThorEnvironment, extra_headers):
-        return ThorNodeClient(self.session, logger=self.logger, env=env,
+    def _make_client(self, env: MayaEnvironment, extra_headers):
+        return MayaNodeClient(self.session, logger=self.logger, env=env,
                               extra_headers=extra_headers)
 
     def set_client_id_for_all(self, client_id):
@@ -182,12 +182,12 @@ class ThorConnector:
             client.set_client_id_header(client_id)
 
     @property
-    def first_client(self) -> ThorNodeClient:
+    def first_client(self) -> MayaNodeClient:
         return self._clients[0]
 
     @property
     def first_client_node_url(self):
-        return self.first_client.env.thornode_url
+        return self.first_client.env.mayanode_url
 
     @property
     def first_client_rpc_url(self):
