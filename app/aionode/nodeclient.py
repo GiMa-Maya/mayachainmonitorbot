@@ -4,13 +4,13 @@ import ujson
 from aiohttp import ClientSession, ClientTimeout
 from aiohttp.helpers import sentinel
 
-from aionode.env import ThorEnvironment
+from aionode.env import MayaEnvironment
 
 
-class ThorNodeClient:
+class MayaNodeClient:
     HEADER_CLIENT_ID = 'X-Client-ID'
 
-    def __init__(self, session: ClientSession, env: ThorEnvironment, logger=None, extra_headers=None):
+    def __init__(self, session: ClientSession, env: MayaEnvironment, logger=None, extra_headers=None):
         self.session = session
         self.timeout = ClientTimeout(total=env.timeout) if env.timeout else sentinel
         self.logger = logger or logging.getLogger(self.__class__.__name__)
@@ -39,10 +39,10 @@ class ThorNodeClient:
             self.extra_headers[self.HEADER_CLIENT_ID] = client_id
 
     def __repr__(self) -> str:
-        return f'ThorNodeClient({self.env.thornode_url!r})'
+        return f'MayaNodeClient({self.env.mayanode_url!r})'
 
     def connection_url(self, path, is_rpc):
         if is_rpc:
             return f'{self.env.rpc_url}{path}'
         else:
-            return f'{self.env.thornode_url}{path}'
+            return f'{self.env.mayanode_url}{path}'
