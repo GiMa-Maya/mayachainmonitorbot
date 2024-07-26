@@ -3,10 +3,10 @@ from dataclasses import dataclass
 
 
 @dataclass
-class ThorEnvironment:
+class MayaEnvironment:
     seed_url: str = ''
     midgard_url: str = ''
-    thornode_url: str = ''
+    mayanode_url: str = ''
     rpc_url: str = ''
 
     timeout: float = 6.0
@@ -67,29 +67,29 @@ class ThorEnvironment:
         return self
 
 
-class ThorURL:
-    class THORNode:
-        PUBLIC = 'https://thornode.thorchain.info'
-        NINE_REALMS = 'https://thornode.ninerealms.com'
-        THORSWAP = 'https://thornode.thorswap.net'
+class MayaURL:
+    class MAYANode:
+        PUBLIC = 'https://mayanode.mayachain.info'
+        NINE_REALMS = 'https://mayanode.mayachain.info'
+        THORSWAP = 'https://mayanode.mayachain.info'
 
-        STAGENET = 'https://stagenet-thornode.ninerealms.com'
+        STAGENET = 'https://stagenet.mayanode.mayachain.info'
         TESTNET = 'https://testnet.thornode.thorchain.info'
 
     class RPC:
-        PUBLIC = 'https://rpc.thorchain.info'
-        NINE_REALMS = 'https://rpc.ninerealms.com'
-        THORSWAP = 'https://rpc.thorswap.net'
+        PUBLIC = 'https://tendermint.mayachain.info'
+        NINE_REALMS = 'https://tendermint.mayachain.info'
+        THORSWAP = 'https://tendermint.mayachain.info'
 
-        STAGENET = 'https://stagenet-rpc.ninerealms.com'
+        STAGENET = 'https://stagenet.tendermint.mayachain.info'
         TESTNET = 'https://testnet.rpc.thorchain.info/'
 
     class Midgard:
-        PUBLIC = 'https://midgard.thorchain.info'
-        NINE_REALMS = 'https://midgard.ninerealms.com'
-        THORSWAP = 'https://midgard.thorswap.net'
+        PUBLIC = 'https://midgard.mayachain.info'
+        NINE_REALMS = 'https://midgard.mayachain.info'
+        THORSWAP = 'https://midgard.mayachain.info'
 
-        STAGENET = 'https://stagenet-midgard.ninerealms.com'
+        STAGENET = 'https://stagenet.midgard.mayachain.info'
         TESTNET = 'https://testnet.midgard.thorchain.info'
 
     class Seed:
@@ -97,42 +97,42 @@ class ThorURL:
         TESTNET = 'https://testnet.seed.thorchain.info'
 
 
-TEST_NET_ENVIRONMENT_MULTI_1 = ThorEnvironment(
-    seed_url=ThorURL.Seed.TESTNET,
-    midgard_url=ThorURL.Midgard.TESTNET,
-    thornode_url=ThorURL.THORNode.TESTNET,
-    rpc_url=ThorURL.RPC.TESTNET,
+TEST_NET_ENVIRONMENT_MULTI_1 = MayaEnvironment(
+    seed_url=MayaURL.Seed.TESTNET,
+    midgard_url=MayaURL.Midgard.TESTNET,
+    mayanode_url=MayaURL.MAYANode.TESTNET,
+    rpc_url=MayaURL.RPC.TESTNET,
     kind='testnet',
 )
 
-MULTICHAIN_STAGENET_ENVIRONMENT = ThorEnvironment(
-    midgard_url=ThorURL.Midgard.STAGENET,
-    thornode_url=ThorURL.THORNode.STAGENET,
-    rpc_url=ThorURL.RPC.STAGENET,
+MULTICHAIN_STAGENET_ENVIRONMENT = MayaEnvironment(
+    midgard_url=MayaURL.Midgard.STAGENET,
+    mayanode_url=MayaURL.MAYANode.STAGENET,
+    rpc_url=MayaURL.RPC.STAGENET,
     kind='stagenet',
 )
 
-MAINNET_ENVIRONMENT = ThorEnvironment(
-    seed_url=ThorURL.Seed.MAINNET,
-    midgard_url=ThorURL.Midgard.NINE_REALMS,
-    thornode_url=ThorURL.THORNode.NINE_REALMS,
-    rpc_url=ThorURL.RPC.NINE_REALMS,
+MAINNET_ENVIRONMENT = MayaEnvironment(
+    seed_url=MayaURL.Seed.MAINNET,
+    midgard_url=MayaURL.Midgard.NINE_REALMS,
+    mayanode_url=MayaURL.MAYANode.NINE_REALMS,
+    rpc_url=MayaURL.RPC.NINE_REALMS,
     kind='mainnet',
 )
 
-MULTICHAIN_MAINNET_9R_ENVIRONMENT = ThorEnvironment(
-    seed_url=ThorURL.Seed.MAINNET,
-    midgard_url=ThorURL.Midgard.NINE_REALMS,
-    thornode_url=ThorURL.THORNode.NINE_REALMS,
-    rpc_url=ThorURL.RPC.NINE_REALMS,
+MULTICHAIN_MAINNET_9R_ENVIRONMENT = MayaEnvironment(
+    seed_url=MayaURL.Seed.MAINNET,
+    midgard_url=MayaURL.Midgard.NINE_REALMS,
+    mayanode_url=mayaURL.MAYANode.NINE_REALMS,
+    rpc_url=MayaURL.RPC.NINE_REALMS,
     kind='mainnet',
 )
 
-MULTICHAIN_MAINNET_THORSWAP_ENVIRONMENT = ThorEnvironment(
-    seed_url=ThorURL.Seed.MAINNET,
-    midgard_url=ThorURL.Midgard.THORSWAP,
-    thornode_url=ThorURL.THORNode.THORSWAP,
-    rpc_url=ThorURL.RPC.THORSWAP,
+MULTICHAIN_MAINNET_THORSWAP_ENVIRONMENT = MayaEnvironment(
+    seed_url=MayaURL.Seed.MAINNET,
+    midgard_url=MayaURL.Midgard.THORSWAP,
+    mayanode_url=MayaURL.MAYANode.THORSWAP,
+    rpc_url=MayaURL.RPC.THORSWAP,
     kind='mainnet',
 )
 
@@ -142,6 +142,6 @@ MCTN = TEST_NET_ENVIRONMENT_MULTI_1  # alias
 MCCN_9R = MULTICHAIN_MAINNET_9R_ENVIRONMENT  # alias
 MCCN_THORSWAP = MULTICHAIN_MAINNET_THORSWAP_ENVIRONMENT  # alias
 
-THORNODE_PORT = 1317
+MAYANODE_PORT = 1317
 TENDERMINT_RPC_PORT_TESTNET = 26657
 TENDERMINT_RPC_PORT_MAINNET = 27147
