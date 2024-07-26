@@ -6,13 +6,13 @@ import typing
 import bech32
 import betterproto
 
-import proto.types as thor_type_lib
+import proto.types as maya_type_lib
 from proto.cosmos.tx.v1beta1 import Tx
 from services.lib.constants import MAYA_PREFIX
 from services.lib.utils import expect_string
 
 
-def parse_thor_address(addr: bytes, prefix=MAYA_PREFIX) -> str:
+def parse_maya_address(addr: bytes, prefix=MAYA_PREFIX) -> str:
     if isinstance(addr, bytes) and addr.startswith(prefix.encode('utf-8')):
         return addr.decode('utf-8')
 
@@ -20,20 +20,20 @@ def parse_thor_address(addr: bytes, prefix=MAYA_PREFIX) -> str:
     return bech32.bech32_encode(prefix, good_bits)
 
 
-def register_thorchain_messages():
+def register_mayachain_messages():
     result = {}
-    for k in dir(thor_type_lib):
-        v = getattr(thor_type_lib, k)
+    for k in dir(maya_type_lib):
+        v = getattr(maya_type_lib, k)
         if inspect.isclass(v) and issubclass(v, betterproto.Message):
             key = f'/types.{k}'
             result[key] = v
     return result
 
 
-THORCHAIN_MESSAGES_MAP = register_thorchain_messages()
+MAYACHAIN_MESSAGES_MAP = register_mayachain_messages()
 
 
-class NativeThorTx:
+class NativeMayaTx:
     def __init__(self, tx: Tx, tx_hash: str = ''):
         self.tx = tx
         self.hash = tx_hash
@@ -49,7 +49,7 @@ class NativeThorTx:
         tx = Tx().parse(data)
         messages = []
         for msg in tx.body.messages:
-            proto_type = THORCHAIN_MESSAGES_MAP.get(msg.type_url)
+            proto_type = MAYACHAIN_MESSAGES_MAP.get(msg.type_url)
             messages.append(
                 proto_type().parse(msg.value) if proto_type else msg
             )
@@ -74,8 +74,8 @@ class NativeThorTx:
         return self.tx.body.messages
 
 
-def thor_decode_amount_field(string: str):
-    """ e.g. 114731984rune """
+def maya_decode_amount_field(string: str):
+    """ e.g. 114731984cacao """
     amt, asset = '', ''
     still_numbers = True
 
@@ -136,13 +136,13 @@ class DecodedEvent(typing.NamedTuple):
         }
 
 
-def thor_decode_event(e, height) -> DecodedEvent:
+def maya_decode_event(e, height) -> DecodedEvent:
     decoded_attrs = {}
     for attr in e['attributes']:
         key = debase64(attr.get('key'))
         value = debase64(attr.get('value'))
         decoded_attrs[key] = value
         if key == 'amount' or key == 'coin':
-            decoded_attrs['amount'], decoded_attrs['asset'] = thor_decode_amount_field(value)
+            decoded_attrs['amount'], decoded_attrs['asset'] = maya_decode_amount_field(value)
 
     return DecodedEvent(e.get('type', ''), decoded_attrs, height=height)
